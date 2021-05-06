@@ -27,3 +27,7 @@
 - `curl`
 - `jq`
 - `Spring Boot CLI`
+
+#### 마이크로서비스 구조
+
+<img src="resources/images/Microservice.png" width="450px" height="300px" title="구조"></img><br/>
