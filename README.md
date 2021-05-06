@@ -30,4 +30,4 @@
 
 #### 마이크로서비스 구조
 
-<img src="resources/images/Microservice.png" width="450px" height="300px" title="구조"></img><br/>
+<img src="resources/images/Microservice.png" title="구조"></img><br/>
