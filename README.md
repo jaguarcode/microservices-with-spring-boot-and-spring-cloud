@@ -30,4 +30,10 @@
 
 #### 마이크로서비스 구조
 
+- 마이크로서비스 구조
+
 <img src="resources/images/Microservice.png" title="구조"></img><br/>
+
+- 영속성 추가
+
+<img src="resources/images/Persistence.png" title="영속성 추가"></img><br/>
