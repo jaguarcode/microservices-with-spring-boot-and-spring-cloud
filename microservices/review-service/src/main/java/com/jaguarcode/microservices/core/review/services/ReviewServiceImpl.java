@@ -1,8 +1,11 @@
 package com.jaguarcode.microservices.core.review.services;
 
+import com.jaguarcode.microservices.core.review.persistence.ReviewEntity;
+import com.jaguarcode.microservices.core.review.persistence.ReviewRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.RestController;
 import com.jaguarcode.api.core.review.Review;
 import com.jaguarcode.api.core.review.ReviewService;
@@ -17,11 +20,32 @@ public class ReviewServiceImpl implements ReviewService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReviewServiceImpl.class);
 
+    private final ReviewRepository repository;
+
+    private final ReviewMapper mapper;
+
     private final ServiceUtil serviceUtil;
 
     @Autowired
-    public ReviewServiceImpl(ServiceUtil serviceUtil) {
+    public ReviewServiceImpl(ReviewRepository repository, ReviewMapper mapper, ServiceUtil serviceUtil) {
+        this.repository = repository;
+        this.mapper = mapper;
         this.serviceUtil = serviceUtil;
+    }
+
+    @Override
+    public Review createReview(Review body) {
+
+        try {
+            ReviewEntity entity = mapper.apiToEntity(body);
+            ReviewEntity newEntity = repository.save(entity);
+
+            LOG.debug("createReview: created a review entity: {}/{}", body.getProductId(), body.getReviewId());
+            return mapper.entityToApi(newEntity);
+
+        } catch (DataIntegrityViolationException dive) {
+            throw new InvalidInputException("Duplicate key, Product Id: " + body.getProductId() + ", Review Id:" + body.getReviewId());
+        }
     }
 
     @Override
@@ -42,5 +66,11 @@ public class ReviewServiceImpl implements ReviewService {
         LOG.debug("/reviews response size: {}", list.size());
 
         return list;
+    }
+
+    @Override
+    public void deleteReviews(int productId) {
+        LOG.debug("deleteReviews: tries to delete reviews for the product with productId: {}", productId);
+        repository.deleteAll(repository.findByProductId(productId));
     }
 }
