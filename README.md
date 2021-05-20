@@ -40,3 +40,7 @@
 - 영속성 추가
 
 <img src="resources/images/Persistence.png" title="영속성 추가"></img><br/>
+
+- 논블로킹 동기 REST API
+
+<img src="resources/images/Nonblocking_API.png" title="논블로킹 동기 REST API"></img><br/>
